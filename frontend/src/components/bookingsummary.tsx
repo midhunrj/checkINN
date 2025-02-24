@@ -104,15 +104,19 @@ const BookingSummary: React.FC = () => {
             console.log("Payment Success:", response);
             try {
               
-              await axios.post(`${baseURL}/verify-razorpay-payment`, {
+             const razordata= await axios.post(`${baseURL}/verify-razorpay-payment`, {
                 razorpay_order_id: response.razorpay_order_id,
                 razorpay_payment_id: response.razorpay_payment_id,
                 razorpay_signature: response.razorpay_signature,
                 bookingId,
               }, { withCredentials: true });
-  
-              
-              await handlePaymentSuccess();
+  console.log(razordata,"razor jskjkjkj")
+              if(razordata.status==200)
+              {
+                console.log("jungliyan");
+                
+              await handlePaymentSuccess(bookingId);
+              }
             } catch (error) {
               toast.error('Error verifying payment');
               console.error("Payment Verification Error:", error);
@@ -148,7 +152,7 @@ const BookingSummary: React.FC = () => {
     }
   };
   
-  const handlePaymentSuccess = async () => {
+  const handlePaymentSuccess = async (bookingId:string) => {
     if (!bookingId) {
       console.error("No bookingId available");
       return;
