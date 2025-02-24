@@ -85,7 +85,7 @@ const HotelCard: React.FC<HotelCardProps> = ({ hotel }) => {
       
         <div className="flex justify-between items-center mt-4">
           <div>
-            <span className="text-2xl font-bold text-purple-600">${hotel.price}</span>
+            <span className="text-2xl font-bold text-purple-600">₹{hotel.price}</span>
             <span className="text-indigo-600 text-sm">/night</span>
           </div>
           <button onClick={()=>handleBooking(hotel)}className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 rounded-xl font-semibold shadow-md hover:from-indigo-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300">

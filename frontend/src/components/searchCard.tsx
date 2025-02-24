@@ -123,6 +123,7 @@ console.log(response,"response data")
 
       if (hotelData.length === 0) {
         toast.info('No hotels found for your criteria');
+        setActiveStep("location")
         return;
       }
 

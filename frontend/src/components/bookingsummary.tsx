@@ -60,7 +60,10 @@ const BookingSummary: React.FC = () => {
       toast.error('Please enter a valid 10-digit phone number');
       return;
     }
-    
+    if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(formData.email)) {
+      toast.error('Please enter a valid email address');
+      return;
+    }
     try {
       const bookingData = {
         ...formData,
@@ -80,35 +83,40 @@ const BookingSummary: React.FC = () => {
   const handleRazorpayPayment = async (bookingId: string) => {
     try {
       const orderResponse = await axios.post(`${baseURL}/create-razorpay-order`, {
-        amount: totalAmount, 
+        amount: totalAmount,
         currency: "INR",
         bookingId,
       }, { withCredentials: true });
-
+  
       const { orderId, amount, currency } = orderResponse.data;
-
-
+  
       const script = document.createElement('script');
       script.src = 'https://checkout.razorpay.com/v1/checkout.js';
       script.onload = () => {
         const options = {
-          key: razorID, 
-          amount: amount, 
+          key: razorID, // Ensure razorID is defined (e.g., from .env or config)
+          amount: amount,
           currency: currency,
           name: "Hotel Booking System",
           description: `Booking for ${hotelName} - Booking ID: ${bookingId}`,
-          order_id: orderId, 
+          order_id: orderId,
           handler: async function (response: any) {
             console.log("Payment Success:", response);
-            
-            await axios.post(`${baseURL}/verify-razorpay-payment`, {
-              razorpay_order_id: response.razorpay_order_id,
-              razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_signature: response.razorpay_signature,
-              bookingId,
-            }, { withCredentials: true });
-            
-            await handlePaymentSuccess();
+            try {
+              
+              await axios.post(`${baseURL}/verify-razorpay-payment`, {
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+                bookingId,
+              }, { withCredentials: true });
+  
+              
+              await handlePaymentSuccess();
+            } catch (error) {
+              toast.error('Error verifying payment');
+              console.error("Payment Verification Error:", error);
+            }
           },
           prefill: {
             name: formData.name,
@@ -122,7 +130,7 @@ const BookingSummary: React.FC = () => {
             color: "#3399cc",
           },
         };
-
+  
         const rzp = new (window as any).Razorpay(options);
         rzp.on('payment.failed', function (response: any) {
           toast.error('Payment failed');
@@ -136,28 +144,36 @@ const BookingSummary: React.FC = () => {
       document.body.appendChild(script);
     } catch (error) {
       toast.error('Error initiating Razorpay payment');
-      console.error(error);
+      console.error("Razorpay Error:", error);
     }
   };
+  
   const handlePaymentSuccess = async () => {
-    if (!bookingId) return;
+    if (!bookingId) {
+      console.error("No bookingId available");
+      return;
+    }
     try {
-console.log("kjnkjnkjnkj handle payment success");
-
-      const response=await axios.put(`${baseURL}/payments`, { bookingId, status: 'Completed' }, { withCredentials: true });
-      console.log(response,"jbjshkjsd");
+      console.log("Starting handlePaymentSuccess for bookingId:", bookingId);
+  
+      const response = await axios.put(
+        `${baseURL}/payments`,
+        { bookingId, status: 'Completed' },
+        { withCredentials: true }
+      );
+      navigate('/');
+      console.log("Payment Status Update Response:", response.data);
+  
       
       toast.success('Payment successful! Booking confirmed.');
       setFormData({ name: '', email: '', phone: '', address: '' });
       setBookingId(null);
-
-      navigate('/'); 
+      
     } catch (error) {
       toast.error('Error updating payment status');
-      console.error(error);
+      console.error("Error in handlePaymentSuccess:", error);
     }
   };
-
   return (
     <div className="w-full max-w-2xl mx-auto bg-white rounded-xl shadow-xl p-6 animate-fade-in">
       <h2 className="text-2xl font-bold text-indigo-800 mb-6">Booking Summary</h2>
@@ -177,15 +193,15 @@ console.log("kjnkjnkjnkj handle payment success");
           <div className="space-y-2 text-indigo-700">
             <div className="flex justify-between">
               <span>Base Price</span>
-              <span>${basePrice?.toFixed(2) || '0.00'}</span>
+              <span>₹{basePrice?.toFixed(2) || '0.00'}</span>
             </div>
             <div className="flex justify-between">
               <span>Taxes ({(taxRate * 100)?.toFixed(0) || 0}%)</span>
-              <span>${taxAmount?.toFixed(2) || '0.00'}</span>
+              <span>₹{taxAmount?.toFixed(2) || '0.00'}</span>
             </div>
             <div className="flex justify-between font-bold text-lg text-purple-600">
               <span>Total Amount</span>
-              <span>${totalAmount?.toFixed(2) || '0.00'}</span>
+              <span>₹{totalAmount?.toFixed(2) || '0.00'}</span>
             </div>
           </div>
         </div>
