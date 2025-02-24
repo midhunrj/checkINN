@@ -18,18 +18,18 @@ interface HotelCardProps {
 }
 
 const HotelCard: React.FC<HotelCardProps> = ({ hotel }) => {
-    const navigate = useNavigate(); // Initialize navigation
+    const navigate = useNavigate(); 
 
   const handleBooking = (hotel:Hotel) => {
     navigate("/bookingpage", {
       state: {
         hotelName: hotel.name,
-        nights: 2, // Example: You can dynamically calculate
+        nights: 2, 
         rooms: 1,
         adults: 2,
         children: 0,
         basePrice: hotel.price,
-        taxRate: 0.18, // 18% tax (Example)
+        taxRate: 0.18, 
         hotelId:hotel._id
       },
     });
@@ -37,7 +37,7 @@ const HotelCard: React.FC<HotelCardProps> = ({ hotel }) => {
   return(
   <div className="w-full mb-6 bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 animate-fade-in">
     <div className="flex flex-col md:flex-row">
-      {/* Image Section */}
+      
       <div className="md:w-1/3 relative group">
         <img
           src={hotel.image}
@@ -47,10 +47,10 @@ const HotelCard: React.FC<HotelCardProps> = ({ hotel }) => {
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </div>
 
-      {/* Details Section */}
+      
       <div className="md:w-2/3 p-6 flex flex-col justify-between">
         <div>
-          {/* Hotel Name and Rating */}
+          
           <div className="flex justify-between items-start">
             <div>
               <h3 className="text-xl font-bold text-indigo-800 group-hover:text-indigo-600 transition-colors duration-200">
@@ -74,7 +74,7 @@ const HotelCard: React.FC<HotelCardProps> = ({ hotel }) => {
                 className="flex items-center gap-2 text-indigo-700 bg-indigo-50 px-3 py-1 rounded-full shadow-sm hover:bg-indigo-100 transition-colors duration-200"
               >
                 {amenity === 'WiFi' && <Wifi className="h-4 w-4 text-indigo-500" />}
-                {amenity === 'Pool' && <Coffee className="h-4 w-4 text-indigo-500" />} {/* Consider using a Pool icon if available */}
+                {amenity === 'Pool' && <Coffee className="h-4 w-4 text-indigo-500" />} 
                 {amenity === 'Parking' && <Car className="h-4 w-4 text-indigo-500" />}
                 <span className="text-sm font-medium">{amenity}</span>
               </div>
@@ -82,7 +82,7 @@ const HotelCard: React.FC<HotelCardProps> = ({ hotel }) => {
           </div>
         </div>
 
-        {/* Price and Book Button */}
+      
         <div className="flex justify-between items-center mt-4">
           <div>
             <span className="text-2xl font-bold text-purple-600">${hotel.price}</span>
@@ -99,14 +99,3 @@ const HotelCard: React.FC<HotelCardProps> = ({ hotel }) => {
 }
 
 export default HotelCard;
-
-// Ensure this CSS is in your global stylesheet (e.g., index.css)
-const styles = `
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .animate-fade-in {
-    animation: fadeIn 0.3s ease-out;
-  }
-`;
