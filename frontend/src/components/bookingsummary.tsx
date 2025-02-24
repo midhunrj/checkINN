@@ -13,7 +13,7 @@ interface BookingData {
   // cardNumber: string;
   // expiryDate: string;
   // cvv: string;
-  hotelDetailsId?: string; // Add hotelDetailsId
+  hotelDetailsId?: string; 
 }
 
 const BookingSummary: React.FC = () => {
@@ -26,7 +26,7 @@ const BookingSummary: React.FC = () => {
     // expiryDate: '',
     // cvv: '',
   });
-  const [bookingId, setBookingId] = useState<string | null>(null); // Track booking ID after submission
+  const [bookingId, setBookingId] = useState<string | null>(null); 
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -38,7 +38,7 @@ const BookingSummary: React.FC = () => {
     children,
     basePrice,
     taxRate,
-    hotelId, // Assuming hotelId is passed from HotelCard via location.state
+    hotelId, 
   } = location.state || {};
 
   const taxAmount = basePrice * taxRate;
@@ -64,14 +64,14 @@ const BookingSummary: React.FC = () => {
     try {
       const bookingData = {
         ...formData,
-        hotelDetailsId: hotelId, // Include hotel ID from location.state
+        hotelDetailsId: hotelId, 
       };
       const response = await axios.post(`${baseURL}/bookings`, bookingData, { withCredentials: true });
-      setBookingId(response.data._id); // Store booking ID
+      setBookingId(response.data._id); 
       handleRazorpayPayment(response.data._id);
       console.log(paypal_ClientId,"kjsnfkjdnfjks");
       
-      toast.success('Booking created! Please complete payment with PayPal.');
+      toast.success('Booking created! Please complete payment with Razorpay.');
     } catch (error) {
       toast.error('Error creating booking');
       console.error(error);
@@ -79,9 +79,8 @@ const BookingSummary: React.FC = () => {
   };
   const handleRazorpayPayment = async (bookingId: string) => {
     try {
-      // Create Razorpay order on the backend
       const orderResponse = await axios.post(`${baseURL}/create-razorpay-order`, {
-        amount: totalAmount, // Razorpay expects amount in paise (INR)
+        amount: totalAmount, 
         currency: "INR",
         bookingId,
       }, { withCredentials: true });
@@ -231,7 +230,7 @@ console.log("kjnkjnkjnkj handle payment success");
         </div>
 
 
-        {/* Submit Button */}
+
         <button
           onClick={handleSubmit}
           className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-3 rounded-xl font-semibold shadow-md hover:from-indigo-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300"
