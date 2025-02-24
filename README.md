@@ -37,3 +37,36 @@ A mini-project web application for booking hotels , featuring a user-friendly se
 - **MongoDB**: Running locally or via a cloud service (e.g., MongoDB Atlas)
 - **Razorpay Account**: Test API Keys (Key ID and Secret) from [Razorpay Dashboard](https://dashboard.razorpay.com/)
 - **Git**: For cloning and version control
+
+
+#setup-instructions
+
+
+here below are the env for frontend and backend
+
+#backend
+
+MONGODB_URL=mongodb+srv://midhunrj18852:yaU6HlvM2soxlQh2@checkinn.9ijx5.mongodb.net/?retryWrites=true&w=majority&appName=CheckINN
+PAYPAL_CLIENT_ID=AYw3H5nfUM9pbXl2hBCxPL7hXtknLr0iaTHgkaX2EVNU22h_W_-nBRAPvEpbBJGauB9618EaRMZcmbDx
+PAYPAL_CLIENT_SECRET=EGrzZu_nJ9OaJ9TatGmPA2KnrcIm6qAZa1iAk6ROjjEkDBbkckQE4V-BZpSTC8ibZTw4K_ZONZXP5iR5
+CLIENT_URL= 'http://localhost:5173'
+
+Razorpay_id_Key="rzp_test_3oY2qxkce538eY"
+Razorsecret_Key="7DeliWImbPufhg7KdSXW0cI6"
+
+mongopass=yaU6HlvM2soxlQh2
+
+
+
+
+#frontend
+
+
+ VITE_USER_URL="http://localhost:7886"
+ VITE_CLIENTID=AYw3H5nfUM9pbXl2hBCxPL7hXtknLr0iaTHgkaX2EVNU22h_W_-nBRAPvEpbBJGauB9618EaRMZcmbDx
+ VITE_RAZORPAYID="rzp_test_3oY2qxkce538eY"
+
+
+
+
+
